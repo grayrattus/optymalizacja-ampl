@@ -1,0 +1,131 @@
+\documentclass{article}
+
+\title{Wspomaganie decyzji - Zad. 1}
+\author{Artur Dziedziczak}
+\date{\today}
+
+\usepackage{microtype}
+\usepackage[
+    backend=biber,
+    natbib=true,
+    url=true,
+    doi=true,
+    eprint=false
+]{biblatex}
+
+\addbibresource{sample.bib}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+\usepackage{float}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage[english, polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{theorem}
+\usepackage{listings}
+
+\lstset{frame=tb,
+  language=Bash,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\usepackage[justification=centering]{caption}
+\begin{document}
+
+\maketitle
+
+\section{Instrukcja instalacji i uruchomienia aplikacji w Node.js}
+
+
+
+\section{Zadanie projektu}
+
+\section{Analityczne sformułowanie modelu. Specyfikacje problemu decyzyjnego z do określeniem wszystkich elementów. Określenie zmiennych decyzyjnych, ograniczeń i funkcji celu.}
+
+Formułowanie problemu zaczynam od stworzenia modelu matematycznego.
+Po przeczytaniu problemu nasunęły mi się następujące spostrzeżenia:
+
+\begin{itemize}
+	\item Ograniczenia, które definiuje problem są liniowe.
+	\item Ceny ciągników można zamodelować przedziałami metodą przyrostów.
+	\item Nie ma potrzeby używania zmiennych binarnych ponieważ funkcja opisująca przychód dla ciągników jest wklęsła oraz wykonywana jest operacja maksymalizacji przychodu.
+\end{itemize}
+
+
+Identyfikacja zbiorów: 
+
+${ S, M ,C }$ - towary
+
+Parametry modelu:
+
+$c_i$ - cena surowca (i=S,M,C)
+
+$c_i_k$ - cena ciągnika $C$ dla $k$ pierwszych ciągników
+
+$c_C_1$ - wielkość produkcji ciągników po koszcie 4000 zł
+
+$c_C_2$ - wielkość produkcji ciągników po koszcie 3500 zł
+
+$c_C_3$ - wielkość produkcji ciągników po koszcie 3000 zł
+
+$c_C_4$ - wielkość produkcji ciągników po koszcie 2700 zł
+
+$c_C - 4000 * c_c_1 + 3500 * c_c_2 + 3000 * c_c_3 + 2700 * c_c_4$ Suma przedziałów
+
+Zmienne decyzyjne:
+
+$w_i$ - liczba wyprodukowanego surowca (i= S,M,C)
+
+$s_i$ - liczba sprzedanego surowca (i= S,M,C)
+
+$t_i$ - liczba surowców wyprodukowanych do stworzenia innych rzeczy (i= S,M,C)
+
+$p$ - liczba dostępnych zasobów pracy
+
+Funkcja celu:
+
+$z <= 900 * s_S + 2500 * s_M + (4000 * c_C_1 + 3500 * c_C_2 + 3000 * c_C_3 + 2700 * c_C_4) - kp$
+
+gdzie:
+
+$z$ - zysk, który maksymalizuję
+
+$kp$ - koszt produkcji wyrażony przez $300 * w_S + 150 * w_M + 500 * w_C$
+
+
+
+
+
+
+
+
+
+\lstset{language=AMPL}
+\begin{lstlisting}
+\end{lstlisting}
+
+\end{document}
