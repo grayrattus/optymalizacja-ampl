@@ -58,10 +58,6 @@
 
 \maketitle
 
-\section{Instrukcja instalacji i uruchomienia aplikacji w Node.js}
-
-
-
 \section{Zadanie projektu}
 
 \section{Analityczne sformułowanie modelu. Specyfikacje problemu decyzyjnego z do określeniem wszystkich elementów. Określenie zmiennych decyzyjnych, ograniczeń i funkcji celu.}
@@ -84,7 +80,7 @@ Parametry modelu:
 
 $c_i$ - cena surowca (i=S,M,C)
 
-$c_i_k$ - cena ciągnika $C$ dla $k$ pierwszych ciągników
+$c_C_k$ - cena ciągnika $C$ dla $k$ pierwszych ciągników
 
 $c_C_1$ - wielkość produkcji ciągników po koszcie 4000 zł
 
@@ -116,16 +112,123 @@ $z$ - zysk, który maksymalizuję
 
 $kp$ - koszt produkcji wyrażony przez $300 * w_S + 150 * w_M + 500 * w_C$
 
+Ograniczenia:
+
+Dla stali $S$
+
+\begin{itemize}
+  \item $w_S = s_S + t_S$
+  \item $w_S <= 400000$
+  \item $t_S <= 0.75 * w_M + w_C$
+\end{itemize}
+
+Dla $M$
+
+\begin{itemize}
+  \item $w_M = s_M + t_M$
+  \item $w_M <= 50000$
+  \item $t_M <= 0.5 * w_S + 0.1 w_C$
+\end{itemize}
+
+Dla $C$
+
+\begin{itemize}
+  \item $w_C = s_C + t_C$
+  \item $w_C <= 550000$
+  \item $t_C <= 0.5 * w_S + 5 * w_M + 3 * w_C$
+\end{itemize}
 
 
+Ograniczenia związane ze sprzedażą ciągników.
+
+\begin{itemize}
+  \item $s_C = c_C_1 + c_C_2 + c_C_3 + c_C_4$
+  \item $0 <= c_C_1 <= 50 000$
+  \item $0 <= c_C_2 <= 25 000$
+  \item $0 <= c_C_3 <= 75 000$
+\end{itemize}
+
+Dla $c_C_4$ nie ma ograniczenia pomiędzy ponieważ ostatnim określonym jest 75 000.
 
 
-
-
-
+\subsection{rozwiązanie AMPL}
 
 \lstset{language=AMPL}
-\begin{lstlisting}
+\begin{lstlisting}[caption={Model napisany w języku AMPL},label=DescriptiveLabel]
+# Model
+
+set TOWARY;
+set cCIndex;
+
+var c {TOWARY} >= 0; #cena
+var cC {cCIndex}  >= 0; # cena ciągnika dla wielkości produkcji
+var w {TOWARY} >= 0;
+var s {TOWARY} >= 0;
+var t {TOWARY} >= 0;
+
+var p >= 0;
+
+var koszt_prod = 300 * w['S'] + 150 * w['M'] + 500 * w['C'];
+
+# Funkcja celu
+maximize zysk: 900 * s['S'] + 2500 * s['M'] + (4000 * cC[1] + 3500 * cC[2] + 3000 * cC[3] + 2700 * cC[4]) - koszt_prod;
+
+# ograniczenia
+subject to limit_sC: s['C'] = sum {j in cCIndex} cC[j];
+
+subject to limit_sC1: 0 <= cC[1] <= 50000;
+subject to limit_sC2: 0 <= cC[2] <= 25000;
+subject to limit_sC3: 0 <= cC[3] <= 75000;
+
+subject to limitS1: w['S'] = s['S'] + t['S'];
+subject to limitS2: w['S'] <= 400000;
+subject to limitS3: t['S'] = 0.75 * w['M'] + w['C'];
+
+subject to limitM1: w['M'] = s['M'] + t['M'];
+subject to limitM2: w['M'] <= 50000;
+subject to limitM3: t['M'] = 0.05 * w['S'] + 0.1 * w['C'];
+
+subject to limitC1: w['C'] = s['C'] + t['C'];
+subject to limitC2: w['C'] <= 550000;
+subject to limitC3: t['C'] = 0.08 * w['S'] + 0.12 * w['M'];
+
+subject to pLimit1: p = 0.5 * w['S'] + 5 * w['M'] + 3 * w['C'];
+subject to pLimit2: p <= 600000;
+
+data; # Dane
+
+set TOWARY := C, M, S;
+
+set cCIndex := 1,2,3,4;
+\end{lstlisting}
+
+\lstset{language=BASH}
+\begin{lstlisting}[caption={Komendy uruchamiające solver na stronie https://ampl.com/cgi-bin/ampl/amplcgi},label=DescriptiveLabel]
+solve;
+display _varname, _var;
+\end{lstlisting}
+
+\lstset{language=BASH}
+\begin{lstlisting}[caption={Wynik solwera},label=DescriptiveLabel]
+MINOS 5.51: optimal solution found.
+5 iterations, objective 313889221.6
+:     _varname       _var        :=
+1    'cC[1]'          50000
+2    'cC[2]'          25000
+3    'cC[3]'          48377.2
+4    'cC[4]'              0
+5    "w['C']"        138323
+6    "w['M']"         21556.9
+7    "w['S']"        154491
+8    "s['C']"        123377
+9    "s['M']"             0
+10   "s['S']"             0
+11   "t['C']"         14946.1
+12   "t['M']"         21556.9
+13   "t['S']"        154491
+14   p                6e+05
+15   koszt_prod   118743000
+;
 \end{lstlisting}
 
 \end{document}
