@@ -82,13 +82,13 @@ $c_i$ - cena surowca (i=S,M,C)
 
 $c_C_k$ - cena ciągnika $C$ dla $k$ pierwszych ciągników
 
-$c_C_1$ - wielkość produkcji ciągników po koszcie 4000 zł
+$c_C_1$ - wielkość produkcji ciągników po cenie sprzedaży 4000 zł
 
-$c_C_2$ - wielkość produkcji ciągników po koszcie 3500 zł
+$c_C_2$ - wielkość produkcji ciągników po cenie sprzedaży 3500 zł
 
-$c_C_3$ - wielkość produkcji ciągników po koszcie 3000 zł
+$c_C_3$ - wielkość produkcji ciągników po cenie sprzedaży 3000 zł
 
-$c_C_4$ - wielkość produkcji ciągników po koszcie 2700 zł
+$c_C_4$ - wielkość produkcji ciągników po cenie sprzedaży 2700 zł
 
 $c_C - 4000 * c_c_1 + 3500 * c_c_2 + 3000 * c_c_3 + 2700 * c_c_4$ Suma przedziałów
 
@@ -113,6 +113,22 @@ $z$ - zysk, który maksymalizuję
 $kp$ - koszt produkcji wyrażony przez $300 * w_S + 150 * w_M + 500 * w_C$
 
 Ograniczenia:
+
+Podstawowe ograniczenia związane z domeną problemu:
+
+Wszystkie zmienne określające produkcję oraz pieniądze nie mogą być mniejsze od zera
+
+\begin{itemize}
+  \item $w_S >= 0$
+  \item $w_M >= 0$
+  \item $w_C >= 0$
+  \item $s_S >= 0$
+  \item $s_M >= 0$
+  \item $s_C >= 0$
+  \item $t_S >= 0$
+  \item $t_M >= 0$
+  \item $t_C >= 0$
+\end{itemize}
 
 Dla stali $S$
 
@@ -151,7 +167,7 @@ Ograniczenia związane ze sprzedażą ciągników.
 Dla $c_C_4$ nie ma ograniczenia pomiędzy ponieważ ostatnim określonym jest 75 000.
 
 
-\subsection{rozwiązanie AMPL}
+\section{Rozwiązanie zadania i interpretacja uzyskanych wyników. Sformułowanie modelu/zadania w  postaci  do  rozwiązania  wybranym  solwerem. }
 
 \lstset{language=AMPL}
 \begin{lstlisting}[caption={Model napisany w języku AMPL},label=DescriptiveLabel]
@@ -202,8 +218,10 @@ set TOWARY := C, M, S;
 set cCIndex := 1,2,3,4;
 \end{lstlisting}
 
+\subsection{Wyznaczenie rozwiązania i interpretacja wyników w terminach oryginalnego modelu}
+
 \lstset{language=BASH}
-\begin{lstlisting}[caption={Komendy uruchamiające solver na stronie https://ampl.com/cgi-bin/ampl/amplcgi},label=DescriptiveLabel]
+\begin{lstlisting}[caption={Komendy uruchamiające solver MINOS na stronie https://ampl.com/cgi-bin/ampl/amplcgi},label=DescriptiveLabel]
 solve;
 display _varname, _var;
 \end{lstlisting}
@@ -230,5 +248,67 @@ MINOS 5.51: optimal solution found.
 15   koszt_prod   118743000
 ;
 \end{lstlisting}
+
+Interpretacja otrzymanych wyników:
+
+\begin{itemize}
+  \item Wykorzystana stal i maszyny zostały użyte do wyprodukowania i sprzedania ciągników. $s_C = 123377$ a reszta $s_M , s_S = 0$.
+  \item Zasób pracy został w pełni wykorzystany $p = 600000$
+  \item Ograniczenie produkcji ciągników zostało wykorzystane dla kosztu 4000zł, 3500zł oraz $48377.2$ ciągnika zostało wytworzone po cenie 2700zł.
+  \item Koszt produkcji wyniósł 118743000zł.
+\end{itemize}
+
+\section{Analiza wrażliwości rozwiązania za zmiany danych. Należy przeprowadzić analizę skutków zmian wielkości zasobu pracy.}
+
+\begin{center}
+\begin{tabular}{c c c c c c c c c }
+  Maksymalna praca& $p$& Zysk & $w_S$& $s_S$& $w_M$& $s_M$& $w_C$& $s_C$ \\
+  1.0e+05  &1.00e+05  &6.246e+07  &25748.5  &0        &3592.81  &0  &23053.9  &20562.9 \\
+  2.0e+05  &2.00e+05  &1.249e+08  &51497    &0        &7185.63  &0  &46107.8  &41125.7 \\
+  3.0e+05  &3.00e+05  &1.815e+08  &77245.5  &0        &10778.4  &0  &69161.7  &61688.6 \\
+  4.0e+05  &4.00e+05  &2.301e+08  &102994   &0        &14371.3  &0  &92215.6  &82251.5 \\
+  5.0e+05  &5.00e+05  &2.720e+08  &128743   &0        &17964.1  &0  &115269   &102814 \\
+  6.0e+05  &6.00e+05  &3.139e+08  &154491   &0        &21556.9  &0  &138323   &123377 \\
+  7.0e+05  &7.00e+05  &3.558e+08  &180240   &0        &25149.7  &0  &161377   &143940 \\
+  8.0e+05  &8.00e+05  &3.969e+08  &254702   &58109.4  &30134.4  &0  &173992   &150000 \\
+  9.0e+05  &9.00e+05  &4.376e+08  &349520   &140499   &35700.6  &0  &182246   &150000 \\
+  1.0e+06  &1.00e+06  &4.751e+08  &400000   &170000   &40000    &0  &200000   &163200 \\
+  1.1e+06  &1.10e+06  &5.090e+08  &400000   &139286   &42857.1  &0  &228571   &191429 \\
+  1.2e+06  &1.20e+06  &5.429e+08  &400000   &108571   &45714.3  &0  &257143   &219657 \\
+  1.3e+06  &1.30e+06  &5.767e+08  &400000   &77857.1  &48571.4  &0  &285714   &247886 \\
+  1.4e+06  &1.39e+06  &6.047e+08  &358333   &0        &50000    &0  &320833   &286167
+
+\end{tabular} 
+\end{center}
+
+\begin{center}
+\begin{tabular}{c c c c c }
+  Maksymalna praca& $c_C_1$& $c_C_2$& $c_C_3$& $c_C_4$ \\
+1.0e+05  &20562.9  &0        &0        &0 \\
+2.0e+05  &41125.7  &0        &0        &0 \\
+3.0e+05  &50000    &11688.6  &0        &0 \\
+4.0e+05  &50000    &25000    &7251.5   &0 \\
+5.0e+05  &50000    &25000    &27814.4  &0 \\
+6.0e+05  &50000    &25000    &48377.2  &0 \\
+7.0e+05  &50000    &25000    &68940.1  &0 \\
+8.0e+05  &50000    &25000    &75000    &0 \\
+9.0e+05  &50000    &25000    &75000    &0 \\
+1.0e+06  &50000    &25000    &75000    &13200 \\
+1.1e+06  &50000    &25000    &75000    &41428.6 \\
+1.2e+06  &50000    &25000    &75000    &69657.1 \\
+1.3e+06  &50000    &25000    &75000    &97885.7 \\
+1.4e+06  &50000    &25000    &75000    &136167 
+\end{tabular} 
+\end{center}
+
+Wnioski:
+
+\begin{itemize}
+    \item Zasoby pracy były zawsze wykorzystywane aż do limitu 1.4e+06, w którym to zostało zużyte 1.39e+06 jednostek pracy. 
+    \item W większości przypadków maksymalizacja zysku odbywa się poprzez sprzedaż i produkcję ciągników. Jedynym odstępstwem jest przedział $1.3e+06 < $ Maksymalna praca $ < 1.3e+06$ gdzie sprzedawana była również stal. 
+    \item Przy zwiększaniu maksymalnego zasobu pracy powyżej 1.4e+06 można zauważyć, że ciągniki nie są produkowane oraz sprzedawane. Jest to spowodowane ogarniczeniem produkcji maszyn, które osiąga tam 50 tys jednostek.
+\end{itemize}
+
+\section{Analiza  możliwości  rozszerzania  modelu.  Opis  projektu  koncentruje  się  na  opisie uproszczonej  sytuacji  decyzyjnej.  Przedyskutować  możliwości  rozszerzenia  modelu urealniające  jego  zastosowanie  wskutek  uwzględnienia  większej  liczby  zależności  itp. Przeanalizować ewentualne skutki takich rozszerzeń dla zadania obliczeniowego}
 
 \end{document}
