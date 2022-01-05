@@ -61,9 +61,44 @@
 
 \section{Zadanie projektu}
 
+Rozważamy następujące uproszczone zagadnienie optymalizacji produkcji w systemie zamkniętym:
+\begin{itemize}
+    \item Należy osiągnąć możliwie największy zysk ze sprzedaży produktów: stali, maszyn, ciągników.
+          Jednostkowa cena sprzedaży wynosi: 900 zł dla stali, 2500 zł dla maszyn, 4000 zł dla pierwszych 50 tys. ciągników, 3500 zł dla dalszych 25 tys.,
+          3000 zł dla dalszych 75 tys. i 2700 zł dla dalszych ciągników.
+    \item Na wyprodukowanie jednostki stali potrzeba: 0.05 jednostek maszyn, 0.08 jednostek ciągników, 0.5 jednostki pracy.
+          Koszt produkcji wynosi 300 zł. Maksymalne możliwości produkcyne: 400 tys. jednostek.
+    \item  Na wyprodukowanie jednoski maszyn potrzeba: 0.75 jednostek stali, 0.12 jednostek ciągników, 5 jednostki pracy. Koszt produkcji wynosi 150 zł. Maksymalne możliwości produkcyjne: 50 tys jednostek.
+    \item Na wyprodukowanie jednostki ciągników potrzeba: 1 jednostkę stali, 0.1 jednostek maszyn, 3 jednostki pracy. Koszt produkcji wynosi 500 zł. Maksymalne możliwości produkcyne: 550 tys. jednostek.
+    \item Dostępne zasoby pracy wynoszą 600 tys. jednostek.
+\end{itemize}
+\begin{enumerate}
+    \item Sformulować możliwie najprostszy model programowania matematycznego dopuszczając podzielność jednostek produktów.
+    \item Wyznaczyć rozwiązanie optymalne (przy pomocy dowolnie wybranego solwera) i zbadać jego wrażliwość na zmiany wielkości zasobu pracy.
+    \item Jaki wpływ na rozwiązanie optymalne miałoby dodatkowe wymaganie pelnego wykorzystania zasobów pracy?
+    \item Jakie są ograniczenia i jakie możliwości rozszerzania opracowanego modelu?
+\end{enumerate}
+
+\noindent
+Raport z wykonania zadania powinien zawierać:
+
+\begin{enumerate}
+    \item Analityczne sformułowanie modelu. Specyfikacje problemu decyzyjnego z do-określeniem wszystkich elementów. Określenie zmiennych decyzyjnych, ograniczeń i funkcji celu.
+    \item Rozwiązanie zadania i interpretacja uzyskanych wyników. Sformułowanie modelu/zadania w postaci do rozwiązania wybranym solwerem.  Wyznaczenie , rozwiązania i interpretacja wyników w terminach oryginalnego modelu.
+    \item Analiza wrażliwości rozwiązania za zmiany danych. Należy przeprowadzić analizę,skutków zmian wielkości zasobu pracy.
+    \item Analiza możliwości rozszerzania modelu. Opis projektu koncentruje się , na opisie uproszczonej sytuacji decyzyjnej. Przedyskutować możliwości rozszerzenia modelu urealniające jego zastosowanie wskutek uwzględnienia większej liczby zależności itp.
+      Przeanalizować ewentualne skutki takich rozszerzeń dla zadania obliczeniowego.
+\end{enumerate}
+
+Ocenie podlegają , wszystkie wymienione punkty oraz jakość raportu.
+Raport powinien być plikiem pdf (z ewentualnymi załącznikami).
+
 \section{Analityczne sformułowanie modelu. Specyfikacje problemu decyzyjnego z do określeniem wszystkich elementów. Określenie zmiennych decyzyjnych, ograniczeń i funkcji celu.}
 
+\noindent
 Formułowanie problemu zaczynam od stworzenia modelu matematycznego.
+
+\noindent
 Po przeczytaniu problemu nasunęły mi się następujące spostrzeżenia:
 
 \begin{itemize}
@@ -125,15 +160,9 @@ Podstawowe ograniczenia związane z domeną problemu:
 Wszystkie zmienne określające produkcję oraz pieniądze nie mogą być mniejsze od zera
 
 \begin{itemize}
-  \item $w_S >= 0$
-  \item $w_M >= 0$
-  \item $w_C >= 0$
-  \item $s_S >= 0$
-  \item $s_M >= 0$
-  \item $s_C >= 0$
-  \item $t_S >= 0$
-  \item $t_M >= 0$
-  \item $t_C >= 0$
+  \item $w_i >= 0$ gdzie i = S, M, C
+  \item $s_i >= 0$ gdzie i = S, M, C
+  \item $t_i >= 0$ gdzie i = S, M, C
 \end{itemize}
 
 Dla stali $S$
@@ -313,27 +342,29 @@ Interpretacja otrzymanych wyników:
 
 \section{Analiza wrażliwości rozwiązania za zmiany danych. Należy przeprowadzić analizę skutków zmian wielkości zasobu pracy.}
 
-Każda jednostka $[j]$ oznacza ilość jednostek danego surowca, lub pracy.
+Każda jednostka $[j]$ oznacza ilość jednostek danego surowca, lub pracy. Dodatkowo niektóre z liczb zostały zapisane w notacji naukowej. Jest to spowodowane tym, że AMPL połowę zmiennych wyświetlał w tej notacji a drugą połowę nie. Te zminne, które
+zaokrąglił postanowiłem przekonwertować w całości na notację naukową.
 
 \begin{table}[H]
   \begin{center}
-    \begin{tabular}{c c c c c c c c c }
+    \begin{tabular}{|c| c| c| c| c| c| c| c| c| }
+      \hline
       Maksymalna praca [j]& $p$ [j]& Zysk [zł] & $w_S$ [j]& $s_S$ [j]& $w_M$ [j]& $s_M$ [j]& $w_C$ [j]& $s_C$ [j] \\
       \hline
-      1.0e+05  &1.00e+05  &6.246e+07  &25748.5  &0        &3592.81  &0  &23053.9  &20562.9 \\
-      2.0e+05  &2.00e+05  &1.249e+08  &51497    &0        &7185.63  &0  &46107.8  &41125.7 \\
-      3.0e+05  &3.00e+05  &1.815e+08  &77245.5  &0        &10778.4  &0  &69161.7  &61688.6 \\
-      4.0e+05  &4.00e+05  &2.301e+08  &102994   &0        &14371.3  &0  &92215.6  &82251.5 \\
-      5.0e+05  &5.00e+05  &2.720e+08  &128743   &0        &17964.1  &0  &115269   &102814 \\
-      6.0e+05  &6.00e+05  &3.139e+08  &154491   &0        &21556.9  &0  &138323   &123377 \\
-      7.0e+05  &7.00e+05  &3.558e+08  &180240   &0        &25149.7  &0  &161377   &143940 \\
-      8.0e+05  &8.00e+05  &3.969e+08  &254702   &58109.4  &30134.4  &0  &173992   &150000 \\
-      9.0e+05  &9.00e+05  &4.376e+08  &349520   &140499   &35700.6  &0  &182246   &150000 \\
-      1.0e+06  &1.00e+06  &4.751e+08  &400000   &170000   &40000    &0  &200000   &163200 \\
-      1.1e+06  &1.10e+06  &5.090e+08  &400000   &139286   &42857.1  &0  &228571   &191429 \\
-      1.2e+06  &1.20e+06  &5.429e+08  &400000   &108571   &45714.3  &0  &257143   &219657 \\
-      1.3e+06  &1.30e+06  &5.767e+08  &400000   &77857.1  &48571.4  &0  &285714   &247886 \\
-      1.4e+06  &1.39e+06  &6.047e+08  &358333   &0        &50000    &0  &320833   &286167
+      1.0e+05  &1.00e+05  &6.246e+07  &25748.5  &0        &3592.81  &0  &23053.9  &20562.9 \\ \hline
+      2.0e+05  &2.00e+05  &1.249e+08  &51497    &0        &7185.63  &0  &46107.8  &41125.7 \\ \hline
+      3.0e+05  &3.00e+05  &1.815e+08  &77245.5  &0        &10778.4  &0  &69161.7  &61688.6 \\ \hline
+      4.0e+05  &4.00e+05  &2.301e+08  &102994   &0        &14371.3  &0  &92215.6  &82251.5 \\ \hline
+      5.0e+05  &5.00e+05  &2.720e+08  &128743   &0        &17964.1  &0  &115269   &102814 \\ \hline
+      6.0e+05  &6.00e+05  &3.139e+08  &154491   &0        &21556.9  &0  &138323   &123377 \\ \hline
+      7.0e+05  &7.00e+05  &3.558e+08  &180240   &0        &25149.7  &0  &161377   &143940 \\ \hline
+      8.0e+05  &8.00e+05  &3.969e+08  &254702   &58109.4  &30134.4  &0  &173992   &150000 \\ \hline
+      9.0e+05  &9.00e+05  &4.376e+08  &349520   &140499   &35700.6  &0  &182246   &150000 \\ \hline
+      1.0e+06  &1.00e+06  &4.751e+08  &400000   &170000   &40000    &0  &200000   &163200 \\ \hline
+      1.1e+06  &1.10e+06  &5.090e+08  &400000   &139286   &42857.1  &0  &228571   &191429 \\ \hline
+      1.2e+06  &1.20e+06  &5.429e+08  &400000   &108571   &45714.3  &0  &257143   &219657 \\ \hline
+      1.3e+06  &1.30e+06  &5.767e+08  &400000   &77857.1  &48571.4  &0  &285714   &247886 \\ \hline
+      1.4e+06  &1.39e+06  &6.047e+08  &358333   &0        &50000    &0  &320833   &286167 \\ \hline
     \end{tabular} 
     \caption{\label{table:allData}Tabela zawiera zgromadzone wartości sprzedaży oraz ilości wytworzonych towarów dla zmiennego limitu maksymalnej pracy.}
   \end{center}
@@ -347,23 +378,24 @@ najwyższą cenę. Dodatkowo od $8.0e+05$ jednostek pracy sprzedawana była stal
 
 \begin{table}[H]
   \begin{center}
-    \begin{tabular}{c c c c c }
+    \begin{tabular}{|1| 1| 1| 1| 1| }
+      \hline
       Maksymalna praca [j]& $c_C_1$ [j]& $c_C_2$ [j]& $c_C_3$ [j]& $c_C_4$ [j] \\
       \hline
-      1.0e+05  &20562.9  &0        &0        &0 \\
-      2.0e+05  &41125.7  &0        &0        &0 \\
-      3.0e+05  &50000    &11688.6  &0        &0 \\
-      4.0e+05  &50000    &25000    &7251.5   &0 \\
-      5.0e+05  &50000    &25000    &27814.4  &0 \\
-      6.0e+05  &50000    &25000    &48377.2  &0 \\
-      7.0e+05  &50000    &25000    &68940.1  &0 \\
-      8.0e+05  &50000    &25000    &75000    &0 \\
-      9.0e+05  &50000    &25000    &75000    &0 \\
-      1.0e+06  &50000    &25000    &75000    &13200 \\
-      1.1e+06  &50000    &25000    &75000    &41428.6 \\
-      1.2e+06  &50000    &25000    &75000    &69657.1 \\
-      1.3e+06  &50000    &25000    &75000    &97885.7 \\
-      1.4e+06  &50000    &25000    &75000    &136167 
+      1.0e+05  &20562.9  &0        &0        &0 \\ \hline
+      2.0e+05  &41125.7  &0        &0        &0 \\ \hline
+      3.0e+05  &50000    &11688.6  &0        &0 \\ \hline
+      4.0e+05  &50000    &25000    &7251.5   &0 \\ \hline
+      5.0e+05  &50000    &25000    &27814.4  &0 \\ \hline
+      6.0e+05  &50000    &25000    &48377.2  &0 \\ \hline
+      7.0e+05  &50000    &25000    &68940.1  &0 \\ \hline
+      8.0e+05  &50000    &25000    &75000    &0 \\ \hline
+      9.0e+05  &50000    &25000    &75000    &0 \\ \hline
+      1.0e+06  &50000    &25000    &75000    &13200 \\ \hline
+      1.1e+06  &50000    &25000    &75000    &41428.6 \\ \hline
+      1.2e+06  &50000    &25000    &75000    &69657.1 \\ \hline
+      1.3e+06  &50000    &25000    &75000    &97885.7 \\ \hline
+      1.4e+06  &50000    &25000    &75000    &136167 \\ \hline
     \end{tabular} 
     \caption{\label{table:partialData}Tabela zawiera wartości produkcji ciągników po różnych cenach sprzedaży dla zmiennego limitu maksymalnej pracy.}
   \end{center}
@@ -371,16 +403,22 @@ najwyższą cenę. Dodatkowo od $8.0e+05$ jednostek pracy sprzedawana była stal
 
 Tabela ~\ref{table:partialData} pokazuje jak wraz z zwiększaniem limitu pracy osiągane były poszczególne limity sprzedaży ciągników.
 
+\begin{figure}[H]
+  \caption{\label{fig:chart}Wykres wzrostu kosztów i zysku dla zwiększonych jednostek pracy }
+  \includegraphics[width=0.99\textwidth]{output/chart.png} % scales both width and height by 0.5
+\end{figure}
+
 Wnioski:
 
 \begin{itemize}
     \item Zasoby pracy były zawsze wykorzystywane aż do limitu 1.4e+06, w którym to zostało zużyte 1.39e+06 jednostek pracy. 
     \item W większości przypadków maksymalizacja zysku odbywa się poprzez sprzedaż i produkcję ciągników. Jedynym odstępstwem jest przedział $1.3e+06 < $ Maksymalna praca $ < 1.3e+06$ gdzie sprzedawana była również stal. 
-      Myślę, że może to być spowodowane wysokimi wymaganiami jednostek pracy oraz jednostek stali do produkcji maszyn. 
+      Myślę, że jest to spowodowane brakiem sprzedaży ciągników, które to zaczynają być znowu sprzedawana gdy pojawiają się nowe jednostki pracy. Możliwe, że powodują to wysokie wymagania jednostek pracy oraz jednostek stali do produkcji maszyn. 
     \item W żadnym przypadku możliwości produkcyjne towarów nie zostały przekroczone.
     \item Przy zwiększaniu maksymalnego zasobu pracy powyżej 1.4e+06 można zauważyć, że ciągniki nie są produkowane oraz sprzedawane. Jest to spowodowane ogarniczeniem produkcji maszyn, które osiąga tam 50 tys jednostek.
     \item Po zwiększeniu zasobu pracy do $1.4e+06$ udało się osiągnąć maksymalne możliwości produkcyjne zakładu.
     \item Dodanie wymagania pelnego wykorzystania zasobów pracy nie wpłynęłoby na wyniki ponieważ zasoby pracy zawsze były w pełni wykorzystywane.
+    \item Wraz ze wzrostem zasobów pracy rośnie zysk oraz koszt co obrazuje wykres \ref{fig:chart}
 \end{itemize}
 
 \section{Analiza  możliwości  rozszerzania  modelu.  Opis  projektu  koncentruje  się  na  opisie uproszczonej  sytuacji  decyzyjnej.  Przedyskutować  możliwości  rozszerzenia  modelu urealniające  jego  zastosowanie  wskutek  uwzględnienia  większej  liczby  zależności  itp. Przeanalizować ewentualne skutki takich rozszerzeń dla zadania obliczeniowego}
@@ -394,6 +432,9 @@ Uproszczony model z zadania można rozszerzyć o następujące zależności:
     odpowiednie określenie czasu wymaganego do stworzenia maszyn oraz ciągników mogłoby sprawić, że sprzedaż towarów mogłaby być bardziej różnorodna.
   \item Obecnie model głównie skupia się na sprzedaży jednego produktu co zazwyczaj nie występuje w przedsiębiorstwach. Można by go rozszerzyć dodając ograniczenia powodujące, że wymagane jest sprzedanie określonych ilości towarów a nie tylko limitowanie ich sprzedaży. 
     Z pewnością takie rozwinięcie modelu wpłynęłoby na lepsze opisanie przez niego rzeczywistości i nie powinno znacznie go skomplikować.
+  \item Zróżnicowanie sprzedaży można by również zapewnić poprzez rabaty na zakup większej ilości sprzętu podczas jednej tranzakcji sprzedaży oraz wprowadzenie systemu klientów. Zbiór klientów mógłby posiadać ograniczenia ile jednostek surowców można sprzedać.
+  \item Aby urealnić model trzeba ograniczyć system jednostek towarów wyprodukowanych do liczb naturalnych. Obecnie model zakłada podzielność jednostek co nie ma pokrycia w rzeczywistości. Odnoszę jednak wrażenie, że nie miałoby to zbyt dużego wpływu na wyniki ponieważ
+    bez zróżnicowania sprzedaży za pomocą ograniczeń system nadal maksymalizowałby sprzedaż ciągników.
 \end{itemize}
 
 
