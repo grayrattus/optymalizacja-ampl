@@ -12,6 +12,10 @@ name="tmp_s_C"; for i in $(cat test | grep "s\['C" | cut -d \" -f 3 | tr -d ' ')
 name="tmp_s_M"; for i in $(cat test | grep "s\['M" | cut -d \" -f 3 | tr -d ' '); do printf "%g\n" $i >> $name; done
 name="tmp_s_S"; for i in $(cat test | grep "s\['S" | cut -d \" -f 3 | tr -d ' '); do printf "%g\n" $i >> $name; done
 
+name="tmp_t_C"; for i in $(cat test | grep "t\['C" | cut -d \" -f 3 | tr -d ' '); do printf "%g\n" $i >> $name; done
+name="tmp_t_M"; for i in $(cat test | grep "t\['M" | cut -d \" -f 3 | tr -d ' '); do printf "%g\n" $i >> $name; done
+name="tmp_t_S"; for i in $(cat test | grep "t\['S" | cut -d \" -f 3 | tr -d ' '); do printf "%g\n" $i >> $name; done
+
 name="tmp_p"; for i in $(cat test | grep "14.*p" | cut -d p -f 2 | tr -d ' '); do printf "%.2e\n" $i >> $name; done
 name="tmp_koszt_prod"; for i in $(cat test | grep "15.*koszt_prod" | cut -d d -f 2 | tr -d ' '); do printf "%.2e\n" $i >> $name; done
 name="tmp_max_praca"; for i in $(cat test | grep "maxPraca = " | cut -d = -f 2 | tr -d ' '); do printf "%.1e\n" $i >> $name; done
@@ -26,6 +30,9 @@ paste -d '&' tmp_max_praca tmp_c_C_1 tmp_c_C_2 tmp_c_C_3 tmp_c_C_4 | sed 's/&/ &
 echo 'Maksymalna praca& $p$& Zysk & $w_S$& $s_S$& $w_M$& $s_M$& $w_C$& $s_C$&' > sprzedaz.txt
 paste -d '&' tmp_max_praca tmp_p tmp_zysk tmp_w_S tmp_s_S tmp_w_M tmp_s_M tmp_w_C tmp_s_C | sed 's/&/ &/g' | column -t >> sprzedaz.txt
 
+paste -d '&' tmp_max_praca tmp_w_S tmp_w_M tmp_w_C | sed 's/&/ ,/g' | column -t > produkcje.csv
+paste -d '&' tmp_max_praca tmp_t_S tmp_t_M tmp_t_C | sed 's/&/ ,/g' | column -t > produkcje_na_rzecz.csv
+paste -d '&' tmp_max_praca tmp_s_S tmp_s_M tmp_s_C | sed 's/&/ ,/g' | column -t > sprzedaz_jed.csv
 
 
 
