@@ -12,6 +12,7 @@
     doi=true,
     eprint=false
 ]{biblatex}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
 
 \addbibresource{sample.bib}
 \usepackage{gensymb}
@@ -66,16 +67,18 @@ Formułowanie problemu zaczynam od stworzenia modelu matematycznego.
 Po przeczytaniu problemu nasunęły mi się następujące spostrzeżenia:
 
 \begin{itemize}
-	\item Ograniczenia, które definiuje problem są liniowe.
-	\item Ceny ciągników można zamodelować przedziałami metodą przyrostów.
+	\item Ograniczenia, które w przedstawionym zagadnieniu są liniowe.
+	\item Ceny ciągników można zamodelować przedziałami metodą przyrostów dla funkcji wypukłych (s.46 z lekcja\_2.pdf). 
 	\item Nie ma potrzeby używania zmiennych binarnych ponieważ funkcja opisująca przychód dla ciągników jest wklęsła oraz wykonywana jest operacja maksymalizacji przychodu.
 \end{itemize}
 
 
+\noindent
 Identyfikacja zbiorów: 
 
 ${ S, M ,C }$ - towary
 
+\noindent
 Parametry modelu:
 
 $c_i$ - cena surowca (i=S,M,C)
@@ -92,6 +95,7 @@ $c_C_4$ - wielkość produkcji ciągników po cenie sprzedaży 2700 zł
 
 $c_C - 4000 * c_c_1 + 3500 * c_c_2 + 3000 * c_c_3 + 2700 * c_c_4$ Suma przedziałów
 
+\noindent
 Zmienne decyzyjne:
 
 $w_i$ - liczba wyprodukowanego surowca (i= S,M,C)
@@ -102,6 +106,7 @@ $t_i$ - liczba surowców wyprodukowanych do stworzenia innych rzeczy (i= S,M,C)
 
 $p$ - liczba dostępnych zasobów pracy
 
+\noindent
 Funkcja celu:
 
 $z <= 900 * s_S + 2500 * s_M + (4000 * c_C_1 + 3500 * c_C_2 + 3000 * c_C_3 + 2700 * c_C_4) - kp$
@@ -112,6 +117,7 @@ $z$ - zysk, który maksymalizuję
 
 $kp$ - koszt produkcji wyrażony przez $300 * w_S + 150 * w_M + 500 * w_C$
 
+\noindent
 Ograniczenia:
 
 Podstawowe ograniczenia związane z domeną problemu:
@@ -184,10 +190,10 @@ var t {TOWARY} >= 0;
 
 var p >= 0;
 
-var koszt_prod = 300 * w['S'] + 150 * w['M'] + 500 * w['C'];
+var kp = 300 * w['S'] + 150 * w['M'] + 500 * w['C'];
 
 # Funkcja celu
-maximize zysk: 900 * s['S'] + 2500 * s['M'] + (4000 * cC[1] + 3500 * cC[2] + 3000 * cC[3] + 2700 * cC[4]) - koszt_prod;
+maximize zysk: 900 * s['S'] + 2500 * s['M'] + (4000 * cC[1] + 3500 * cC[2] + 3000 * cC[3] + 2700 * cC[4]) - kp;
 
 # ograniczenia
 subject to limit_sC: s['C'] = sum {j in cCIndex} cC[j];
@@ -245,70 +251,152 @@ MINOS 5.51: optimal solution found.
 12   "t['M']"         21556.9
 13   "t['S']"        154491
 14   p                6e+05
-15   koszt_prod   118743000
+15   kp              118743000
 ;
 \end{lstlisting}
+
+Wyniki te prezentuję w tabeli, która wartości solvera przypisuje do zmiennych modelu.
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{|c | c| }
+      \hline
+      Zmienna & Wartość \\ 
+      \hline
+      zysk [zł] & 313889221.6 \\
+      \hline
+      $c_C_1 [j]$& 50000\\
+      \hline
+      $c_C_2 [j]$&          25000 \\
+      \hline
+      $c_C_3 [j]$&       48377.2 \\
+      \hline
+      $c_C_4 [j]$&        0 \\
+      \hline
+      $w_C [j]$&        138323 \\
+      \hline
+      $w_M [j]$&         21556.9 \\
+      \hline
+      $w_S [j]$&        154491 \\
+      \hline
+      $s_C [j]$&        123377 \\
+      \hline
+      $s_M [j]$&             0 \\
+      \hline
+      $s_S [j]$&             0 \\
+      \hline
+      $t_C [j]$&         14946.1 \\
+      \hline
+      $t_M [j]$&         21556.9 \\
+      \hline
+      $t_S [j]$&        154491 \\
+      \hline
+      $p [j]$&                6e+05 \\
+      \hline
+      $kp$ [zł] &  118743000 \\
+      \hline
+    \end{tabular} 
+    \caption{\label{table:setka}Tabela zawiera wartości obliczone przez solver opisane za pomocą modelu matematycznego.}
+  \end{center}
+\end{table}
 
 Interpretacja otrzymanych wyników:
 
 \begin{itemize}
-  \item Wykorzystana stal i maszyny zostały użyte do wyprodukowania i sprzedania ciągników. $s_C = 123377$ a reszta $s_M , s_S = 0$.
+  \item Wyprodukowana stal i maszyny zostały użyte do wyprodukowania i sprzedania ciągników. $s_C = 123377$ a reszta $s_M , s_S = 0$.
   \item Zasób pracy został w pełni wykorzystany $p = 600000$
-  \item Ograniczenie produkcji ciągników zostało wykorzystane dla kosztu 4000zł, 3500zł oraz $48377.2$ ciągnika zostało wytworzone po cenie 2700zł.
+  \item Ograniczenie produkcji ciągników zostało wykorzystane dla kosztu 4000zł, 3500zł oraz $48377.2$ ciągnika zostało wytworzone po cenie 2700zł. Najwięcej zostało sprzedanych po cenie 4000zł za jednostkę.
+  \item Najwięcej wyprodukowano $w_S$ (stali), następnie $w_C$ (ciągników) i $w_M$ (maszyn).
   \item Koszt produkcji wyniósł 118743000zł.
+  \item Zakład zarobił 195146221 zł (zysk - koszt produkcji).
 \end{itemize}
 
 \section{Analiza wrażliwości rozwiązania za zmiany danych. Należy przeprowadzić analizę skutków zmian wielkości zasobu pracy.}
 
-\begin{center}
-\begin{tabular}{c c c c c c c c c }
-  Maksymalna praca& $p$& Zysk & $w_S$& $s_S$& $w_M$& $s_M$& $w_C$& $s_C$ \\
-  1.0e+05  &1.00e+05  &6.246e+07  &25748.5  &0        &3592.81  &0  &23053.9  &20562.9 \\
-  2.0e+05  &2.00e+05  &1.249e+08  &51497    &0        &7185.63  &0  &46107.8  &41125.7 \\
-  3.0e+05  &3.00e+05  &1.815e+08  &77245.5  &0        &10778.4  &0  &69161.7  &61688.6 \\
-  4.0e+05  &4.00e+05  &2.301e+08  &102994   &0        &14371.3  &0  &92215.6  &82251.5 \\
-  5.0e+05  &5.00e+05  &2.720e+08  &128743   &0        &17964.1  &0  &115269   &102814 \\
-  6.0e+05  &6.00e+05  &3.139e+08  &154491   &0        &21556.9  &0  &138323   &123377 \\
-  7.0e+05  &7.00e+05  &3.558e+08  &180240   &0        &25149.7  &0  &161377   &143940 \\
-  8.0e+05  &8.00e+05  &3.969e+08  &254702   &58109.4  &30134.4  &0  &173992   &150000 \\
-  9.0e+05  &9.00e+05  &4.376e+08  &349520   &140499   &35700.6  &0  &182246   &150000 \\
-  1.0e+06  &1.00e+06  &4.751e+08  &400000   &170000   &40000    &0  &200000   &163200 \\
-  1.1e+06  &1.10e+06  &5.090e+08  &400000   &139286   &42857.1  &0  &228571   &191429 \\
-  1.2e+06  &1.20e+06  &5.429e+08  &400000   &108571   &45714.3  &0  &257143   &219657 \\
-  1.3e+06  &1.30e+06  &5.767e+08  &400000   &77857.1  &48571.4  &0  &285714   &247886 \\
-  1.4e+06  &1.39e+06  &6.047e+08  &358333   &0        &50000    &0  &320833   &286167
+Każda jednostka $[j]$ oznacza ilość jednostek danego surowca, lub pracy.
 
-\end{tabular} 
-\end{center}
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{c c c c c c c c c }
+      Maksymalna praca [j]& $p$ [j]& Zysk [zł] & $w_S$ [j]& $s_S$ [j]& $w_M$ [j]& $s_M$ [j]& $w_C$ [j]& $s_C$ [j] \\
+      \hline
+      1.0e+05  &1.00e+05  &6.246e+07  &25748.5  &0        &3592.81  &0  &23053.9  &20562.9 \\
+      2.0e+05  &2.00e+05  &1.249e+08  &51497    &0        &7185.63  &0  &46107.8  &41125.7 \\
+      3.0e+05  &3.00e+05  &1.815e+08  &77245.5  &0        &10778.4  &0  &69161.7  &61688.6 \\
+      4.0e+05  &4.00e+05  &2.301e+08  &102994   &0        &14371.3  &0  &92215.6  &82251.5 \\
+      5.0e+05  &5.00e+05  &2.720e+08  &128743   &0        &17964.1  &0  &115269   &102814 \\
+      6.0e+05  &6.00e+05  &3.139e+08  &154491   &0        &21556.9  &0  &138323   &123377 \\
+      7.0e+05  &7.00e+05  &3.558e+08  &180240   &0        &25149.7  &0  &161377   &143940 \\
+      8.0e+05  &8.00e+05  &3.969e+08  &254702   &58109.4  &30134.4  &0  &173992   &150000 \\
+      9.0e+05  &9.00e+05  &4.376e+08  &349520   &140499   &35700.6  &0  &182246   &150000 \\
+      1.0e+06  &1.00e+06  &4.751e+08  &400000   &170000   &40000    &0  &200000   &163200 \\
+      1.1e+06  &1.10e+06  &5.090e+08  &400000   &139286   &42857.1  &0  &228571   &191429 \\
+      1.2e+06  &1.20e+06  &5.429e+08  &400000   &108571   &45714.3  &0  &257143   &219657 \\
+      1.3e+06  &1.30e+06  &5.767e+08  &400000   &77857.1  &48571.4  &0  &285714   &247886 \\
+      1.4e+06  &1.39e+06  &6.047e+08  &358333   &0        &50000    &0  &320833   &286167
+    \end{tabular} 
+    \caption{\label{table:allData}Tabela zawiera zgromadzone wartości sprzedaży oraz ilości wytworzonych towarów dla zmiennego limitu maksymalnej pracy.}
+  \end{center}
+\end{table}
 
-\begin{center}
-\begin{tabular}{c c c c c }
-  Maksymalna praca& $c_C_1$& $c_C_2$& $c_C_3$& $c_C_4$ \\
-1.0e+05  &20562.9  &0        &0        &0 \\
-2.0e+05  &41125.7  &0        &0        &0 \\
-3.0e+05  &50000    &11688.6  &0        &0 \\
-4.0e+05  &50000    &25000    &7251.5   &0 \\
-5.0e+05  &50000    &25000    &27814.4  &0 \\
-6.0e+05  &50000    &25000    &48377.2  &0 \\
-7.0e+05  &50000    &25000    &68940.1  &0 \\
-8.0e+05  &50000    &25000    &75000    &0 \\
-9.0e+05  &50000    &25000    &75000    &0 \\
-1.0e+06  &50000    &25000    &75000    &13200 \\
-1.1e+06  &50000    &25000    &75000    &41428.6 \\
-1.2e+06  &50000    &25000    &75000    &69657.1 \\
-1.3e+06  &50000    &25000    &75000    &97885.7 \\
-1.4e+06  &50000    &25000    &75000    &136167 
-\end{tabular} 
-\end{center}
+Jak widać w tabeli ~\ref{table:allData} zysk rósł wraz ze zwiększaniem się maksymalnego limitu pracy. Można też zauważyć, że w większości przypadków cały zasób pracy został wykorzystany. Nie został on
+tylko wykorzystany gdy wartość $w_M$ osiągnęła limit 50000. Jest to spowodowane tym, że przy tym limicie nie można już było dalej wytwarzać ciągników.
+
+Maksymalizacja zysku odbywała się poprzez używanie maszyn oraz stali do produkcji ciągników, które następnie były sprzedawane. Jest to logiczne ponieważ ciągniki nawet dla kolejnych progów sprzedaży posiadają
+najwyższą cenę. Dodatkowo od $8.0e+05$ jednostek pracy sprzedawana była stal jednak maszyny nigdy nie były produkowane na sprzedaż.
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{c c c c c }
+      Maksymalna praca [j]& $c_C_1$ [j]& $c_C_2$ [j]& $c_C_3$ [j]& $c_C_4$ [j] \\
+      \hline
+      1.0e+05  &20562.9  &0        &0        &0 \\
+      2.0e+05  &41125.7  &0        &0        &0 \\
+      3.0e+05  &50000    &11688.6  &0        &0 \\
+      4.0e+05  &50000    &25000    &7251.5   &0 \\
+      5.0e+05  &50000    &25000    &27814.4  &0 \\
+      6.0e+05  &50000    &25000    &48377.2  &0 \\
+      7.0e+05  &50000    &25000    &68940.1  &0 \\
+      8.0e+05  &50000    &25000    &75000    &0 \\
+      9.0e+05  &50000    &25000    &75000    &0 \\
+      1.0e+06  &50000    &25000    &75000    &13200 \\
+      1.1e+06  &50000    &25000    &75000    &41428.6 \\
+      1.2e+06  &50000    &25000    &75000    &69657.1 \\
+      1.3e+06  &50000    &25000    &75000    &97885.7 \\
+      1.4e+06  &50000    &25000    &75000    &136167 
+    \end{tabular} 
+    \caption{\label{table:partialData}Tabela zawiera wartości produkcji ciągników po różnych cenach sprzedaży dla zmiennego limitu maksymalnej pracy.}
+  \end{center}
+\end{table}
+
+Tabela ~\ref{table:partialData} pokazuje jak wraz z zwiększaniem limitu pracy osiągane były poszczególne limity sprzedaży ciągników.
 
 Wnioski:
 
 \begin{itemize}
     \item Zasoby pracy były zawsze wykorzystywane aż do limitu 1.4e+06, w którym to zostało zużyte 1.39e+06 jednostek pracy. 
     \item W większości przypadków maksymalizacja zysku odbywa się poprzez sprzedaż i produkcję ciągników. Jedynym odstępstwem jest przedział $1.3e+06 < $ Maksymalna praca $ < 1.3e+06$ gdzie sprzedawana była również stal. 
+      Myślę, że może to być spowodowane wysokimi wymaganiami jednostek pracy oraz jednostek stali do produkcji maszyn. 
+    \item W żadnym przypadku możliwości produkcyjne towarów nie zostały przekroczone.
     \item Przy zwiększaniu maksymalnego zasobu pracy powyżej 1.4e+06 można zauważyć, że ciągniki nie są produkowane oraz sprzedawane. Jest to spowodowane ogarniczeniem produkcji maszyn, które osiąga tam 50 tys jednostek.
+    \item Po zwiększeniu zasobu pracy do $1.4e+06$ udało się osiągnąć maksymalne możliwości produkcyjne zakładu.
+    \item Dodanie wymagania pelnego wykorzystania zasobów pracy nie wpłynęłoby na wyniki ponieważ zasoby pracy zawsze były w pełni wykorzystywane.
 \end{itemize}
 
 \section{Analiza  możliwości  rozszerzania  modelu.  Opis  projektu  koncentruje  się  na  opisie uproszczonej  sytuacji  decyzyjnej.  Przedyskutować  możliwości  rozszerzenia  modelu urealniające  jego  zastosowanie  wskutek  uwzględnienia  większej  liczby  zależności  itp. Przeanalizować ewentualne skutki takich rozszerzeń dla zadania obliczeniowego}
+
+Uproszczony model z zadania można rozszerzyć o następujące zależności:
+
+\begin{itemize}
+  \item Opisywany model zawiera małą ilość zmiennych. Rozszerzając go do lepszego opisania rzeczywistości możnaby uwzględnić również zmienne opisujące \textbf{zużycie prądu, wody, większe składowe towarów oraz np. powierzchni potrzebnej na wyprodukowanie poszczególnych towarów}. 
+    Oprócz takich podstawowych zmiennych można również dodać bardziej skomplikowane jak np. \textbf{uwzględnienie pracy zmianowej, czasu pracy, zmiany cen w czasie czy choćby czas oraz koszt transportu towarów na sprzedaż}. O ile te pierwsze rozszerzenia możnaby łatwo dodać
+    do modelu to bardziej skomplikowane wymagałyby znajomości większej ilości algorytmów optymalizacji. Największym problemem do zamodelowania byłaby zmienna związana z czasem. Na pewno jednak sprawiłaby ona, że model byłby zdecydowanie bardziej realistyczny. Wydaje mi się, że
+    odpowiednie określenie czasu wymaganego do stworzenia maszyn oraz ciągników mogłoby sprawić, że sprzedaż towarów mogłaby być bardziej różnorodna.
+  \item Obecnie model głównie skupia się na sprzedaży jednego produktu co zazwyczaj nie występuje w przedsiębiorstwach. Można by go rozszerzyć dodając ograniczenia powodujące, że wymagane jest sprzedanie określonych ilości towarów a nie tylko limitowanie ich sprzedaży. 
+    Z pewnością takie rozwinięcie modelu wpłynęłoby na lepsze opisanie przez niego rzeczywistości i nie powinno znacznie go skomplikować.
+\end{itemize}
+
+
+
 
 \end{document}
