@@ -155,12 +155,6 @@ Wnioski:
 
 \subsection{Kryterium Hurwicza}
 
-\begin{equation}\label{hurwicz}
-  H = \alpha O + (1 - \alpha) P, 0 \lt \alpha \lt 1
-\end{equation}
-
-Równanie \ref{hurwicz} przedstawia maksymalizację najlepszego i najgorszego możliwego wyniku.
-
 \begin{table}[H]
   \begin{center}
     \begin{tabular}{ c | c c c c c c c c c c c }
@@ -172,7 +166,7 @@ Równanie \ref{hurwicz} przedstawia maksymalizację najlepszego i najgorszego mo
       $x_4$ & 5 & 97 & 189 & \cellcolor{green!25}281 & \cellcolor{green!25}373 & \cellcolor{green!25}464 & \cellcolor{green!25}556 & \cellcolor{green!25}648 & \cellcolor{green!25}740 & \cellcolor{green!25}832 & \cellcolor{green!25}924 \\
       \hline
     \end{tabular} 
-    \caption{\label{table:optpes} Tabela zawiera wartości funkcji H \ref{hurwicz}}
+    \caption{\label{table:optpes} Tabela zawiera wartości wartości funkcji H oraz kombinację }
   \end{center}
 \end{table}
 
@@ -183,6 +177,44 @@ Wnioski:
 \end{itemize}
 
 \subsection{Minimalizacja maksymalnego żalu}
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{ c |  c  c   c   c   c   c  }
+      & S1 & S2 & S3 & S4 & S5 & S6 \\
+      \hline
+      $x_1$ & 292 & 179 & 114 & 247 & 426 & 259 \\
+      $x_2$ & -128 & 560 & 648 & 544 & 182 & 850 \\
+      $x_3$ & 420 & 187 & 366 & 249 & 322 & 159 \\
+      $x_4$ & 579 & 639 & 379 & 924 & 5 & 569 \\
+      \hline
+      maks. & 579 & 639 & 648 & 924 & 426 & 850 \\
+    \end{tabular} 
+    \caption{\label{table:areals} Tabela zawiera maksymalny zysk dla poszczególnych areałów.}
+  \end{center}
+\end{table}
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{ c |  c  c   c   c   c   c | c  }
+      & S1 & S2 & S3 & S4 & S5 & S6 & Maksimum \\
+      \hline
+      $x_1$ & 287 & 460 & 534 & 677 & 0   & 591 & 677 \\
+      $x_2$ & 707 & 79  & 0   & 380 & 244 & 0   & 707 \\
+      $x_3$ & 159 & 452 & 282 & 675 & 104 & 691 & 691 \\
+      $x_4$ & 0   & 0   & 269 & 0   & 421 & 281 & \cellcolor{green!25}421 \\
+      \hline
+    \end{tabular} 
+    \caption{\label{table:zal} Wyniki obliczeń dla minimalizacji masymalnego żalu. }
+  \end{center}
+\end{table}
+
+Wnioski:
+
+\begin{itemize}
+  \item 
+\end{itemize}
+
 
 \section{Decyzje o podzielnych wariantach}
 \end{document}
