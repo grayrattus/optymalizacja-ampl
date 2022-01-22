@@ -7,6 +7,7 @@
 \usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
 \usepackage{subcaption}
 \usepackage{microtype}
+\usepackage{amsmath}
 \usepackage[
     backend=biber,
     natbib=true,
@@ -94,6 +95,7 @@ Przeanalizować  wyniki różnych kryteriów wyobru w warunkach niepewności.
 
 Raport powinien być plikiem pdf (z ewentualnymi załącznikami).
 
+\newpage
 
 \section{Decyzje o niepodzielnych wariantach}
 
@@ -103,6 +105,16 @@ W tej sekcji sprawozdania nie używam języka AMPL ponieważ obliczenia i podj�
 prostą analizę danych w tabeli.
 
 \subsection{Kryterium średniej}
+
+Kryterium to polega na maksymalizacji wyniku średniego. Prowadzi ono do wyboru decyzji o największej średniej arytmetycznej (lub sumie) 
+wyników poszczegónych scenariuszy. \\
+
+\begin{equation}
+    \centering
+    max\{\frac{1}{m} \sum^{m}_{i=1} f_{i}(x) : x \in Q\} = max \{ \sum^{m}_{i=1} f_{i}(x) : x \in Q \}
+\end{equation}
+
+Obliczenia:
 
 \begin{table}[H]
   \begin{center}
@@ -130,6 +142,23 @@ Wnioski:
 
 \subsection{Kryterium optymistyczne i pesymistyczne}
 
+Kryteria te koncentrują się na najlepszej i najgorszej realizacji. 
+
+\begin{itemize}
+    \item Model optymistyczny - decyzje oceniane z perspektywy najlepszych możliwych dla niech scenariuszy
+    \item Model pesymistyczny - decyzje oceniane z perspektywy najniekorzystniejszych możliwych dla niech scenariuszy
+\end{itemize}
+
+
+\begin{equation}
+  \centering
+     max \{\underset{i=1, ..., m}{max} f_i(x) : x \in Q \} \\
+  \centering
+     max \{\underset{i=1, ..., m}{min} f_i(x) : x \in Q \} \\
+\end{equation}
+
+Obliczenia:
+
 \begin{table}[H]
   \begin{center}
     \begin{tabular}{ c |  c  c   c   c   c   c  | c | c  }
@@ -155,6 +184,25 @@ Wnioski:
 
 \subsection{Kryterium Hurwicza}
 
+Kryterium Hurwicza stara się maksymalizować kombinację najlepszego i najgorszego możliwego wyniku.
+
+\begin{equation}
+    \centering
+    H = \alpha O + (1 - \alpha) P, 0 \leq \alpha \leq 1
+\end{equation}
+
+gdzie: \\
+$O$ - wartość optymistyczna, \\
+$P$ - wartość pesymistyczna \\
+$\alpha$ - subiektywny współczynnik optymizmu. $\alpha = 0$ oznacza kryterium pesymistyczne, a $\alpha = 1$ kryterium optymistyczne  \\
+
+\begin{equation}
+  \centering
+    max \{ \alpha \underset{i=1,...,m}{max} f_i(x) + (1 - \alpha) \underset{i=1,...,m}{min} f_i(x) : x \in Q\}
+\end{equation}
+
+Obliczenia:
+
 \begin{table}[H]
   \begin{center}
     \begin{tabular}{ c | c c c c c c c c c c c }
@@ -173,10 +221,17 @@ Wnioski:
 Wnioski:
 
 \begin{itemize}
-  \item 
+  \item Dla kryterium pesymistycznego wybrany został warian $x_3$ a dla optymistycznego $x_4$.
 \end{itemize}
 
 \subsection{Minimalizacja maksymalnego żalu}
+
+Minimalizacja maksymalnego żalu pomaga podjąć decyzję poprzez określenie różnicy pomiędzy zyskami z rozwiązania najlepszego a faktycznie osiągniętymi zyskami.
+Wartość tę określa się jako \textbf{żal}.
+
+\\
+Obliczenia:
+
 
 \begin{table}[H]
   \begin{center}
@@ -212,8 +267,17 @@ Wnioski:
 Wnioski:
 
 \begin{itemize}
-  \item 
+  \item Najmniejszy możliwy żal wskazuje na uprawę $x_4$
+  \item Wyrażenie zysku o znaku ujemnym powoduje rosnący żal.
 \end{itemize}
+
+\subsection{Wnioski ogólne}
+
+\begin{itemize}
+  \item Kryteria Hurwicza, minimalizacji maksymalnego żalu, optymistyczne oraz średniej wskazują, że najlepszą decyzją byłaby $x_4$
+\end{itemize}
+
+
 
 
 \section{Decyzje o podzielnych wariantach}
