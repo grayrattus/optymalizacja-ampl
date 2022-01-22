@@ -25,7 +25,7 @@
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=cyan,
-    pdftitle={Overleaf Example},
+    pdftitle={Wspomaganie decyzji - Zad. 1 Artur Dziedziczak},
     pdfpagemode=FullScreen,
     }
 
@@ -103,7 +103,7 @@ Formułowanie problemu zaczynam od stworzenia modelu matematycznego.
 Po przeczytaniu problemu nasunęły mi się następujące spostrzeżenia:
 
 \begin{itemize}
-	\item Ograniczenia, które w przedstawionym zagadnieniu są liniowe.
+	\item Przedstawione ograniczenia są liniowe
 	\item Ceny ciągników można zamodelować przedziałami metodą przyrostów dla funkcji wypukłych (s.46 z lekcja\_2.pdf). 
 	\item Nie ma potrzeby używania zmiennych binarnych ponieważ funkcja opisująca przychód dla ciągników jest wklęsła oraz wykonywana jest operacja maksymalizacji przychodu.
 \end{itemize}
@@ -112,7 +112,7 @@ Po przeczytaniu problemu nasunęły mi się następujące spostrzeżenia:
 \noindent
 Identyfikacja zbiorów: 
 
-${ S, M ,C }$ - towary
+$\{ S, M ,C \}$ - towary/surowce
 
 \noindent
 Parametry modelu:
@@ -439,14 +439,14 @@ Wnioski:
 
 \begin{itemize}
   \item Zasoby pracy były zawsze wykorzystywane aż do limitu 1.4e+06, w którym to zostało zużyte 1.39e+06 jednostek pracy co pokazuje tabela \ref{table:allData} oraz wykres \ref{fig:chart}.
-  \item W większości przypadków maksymalizacja zysku odbywa się poprzez sprzedaż i produkcję ciągników. Jedynym odstępstwem jest przedział $1.3e+06 < $ Maksymalna praca $ < 1.3e+06$ gdzie sprzedawana była również stal. 
+  \item W większości przypadków maksymalizacja zysku odbywa się poprzez sprzedaż i produkcję ciągników. Jedynym odstępstwem jest przedział $8.0e+05 < $ Maksymalna praca $ < 1.3e+06$ gdzie sprzedawana była również stal. 
     Można to zaobserwować na wykresie \ref{fig:sprzedaz} oraz w tabeli \ref{table:allData}. Jest to również widoczne na wykresie \ref{fig:produkcja} oraz \ref{fig:produkcja_na_rzecz}, gdzie widać wzrost produkcji stali i spadek produkcji ciżgników. Myślę, że jest to spowodowane brakiem sprzedaży ciągników, które to zaczynają być znowu sprzedawana gdy pojawiają się nowe jednostki pracy. Możliwe, że powodują to wysokie wymagania jednostek pracy oraz jednostek stali do produkcji maszyn. 
   \item W żadnym przypadku możliwości produkcyjne towarów nie zostały przekroczone. Wskazuje na to pierwsza i druga kolumna tabeli \ref{table:allData}.
   \item Przy zwiększaniu maksymalnego zasobu pracy powyżej 1.4e+06 można zauważyć, że ciągniki nie są produkowane oraz sprzedawane. Jest to spowodowane ogarniczeniem produkcji maszyn, które osiąga tam 50 tys jednostek. Można to zobaczyć w tabeli \ref{table:allData} $w_M$ ostatni wiersz.
   \item Po zwiększeniu zasobu pracy do $1.4e+06$ udało się osiągnąć maksymalne możliwości produkcyjne zakładu. Ponownie tabela \ref{table:allData} oraz wykres \ref{fig:chart} gdzie od 1.4e+06 jednostek pracy zysk oraz koszt są stałe.
   \item Dodanie wymagania pelnego wykorzystania zasobów pracy nie wpłynęłoby na wyniki ponieważ zasoby pracy zawsze były w pełni wykorzystywane.
   \item Wraz ze wzrostem maksymalnej pracy kolejne progi sprzedaży ciągników zostały wypełnione. Dobrze to widać w tabeli \ref{table:partialData}.
-  \item Wraz ze wzrostem zasobów pracy rośnie zysk oraz koszt co obrazuje wykres \ref{fig:chart}
+  \item Wraz ze wzrostem zasobów pracy rośnie zysk oraz koszt co obrazuje wykres \ref{fig:chart}.
 \end{itemize}
 
 \section{Analiza  możliwości  rozszerzania  modelu.  Opis  projektu  koncentruje  się  na  opisie uproszczonej  sytuacji  decyzyjnej.  Przedyskutować  możliwości  rozszerzenia  modelu urealniające  jego  zastosowanie  wskutek  uwzględnienia  większej  liczby  zależności  itp. Przeanalizować ewentualne skutki takich rozszerzeń dla zadania obliczeniowego}
@@ -460,7 +460,7 @@ Uproszczony model z zadania można rozszerzyć o następujące zależności:
     odpowiednie określenie czasu wymaganego do stworzenia maszyn oraz ciągników mogłoby sprawić, że sprzedaż towarów mogłaby być bardziej różnorodna.
   \item Obecnie model głównie skupia się na sprzedaży jednego produktu co zazwyczaj nie występuje w przedsiębiorstwach. Można by go rozszerzyć dodając ograniczenia powodujące, że wymagane jest sprzedanie określonych ilości towarów a nie tylko limitowanie ich sprzedaży. 
     Z pewnością takie rozwinięcie modelu wpłynęłoby na lepsze opisanie przez niego rzeczywistości i nie powinno znacznie go skomplikować.
-  \item Zróżnicowanie sprzedaży można by również zapewnić poprzez rabaty na zakup większej ilości sprzętu podczas jednej tranzakcji sprzedaży oraz wprowadzenie systemu klientów. Zbiór klientów mógłby posiadać ograniczenia ile jednostek surowców można sprzedać.
+  \item Zróżnicowanie sprzedaży można by również zapewnić poprzez rabaty na zakup większej ilości sprzętu podczas jednej tranzakcji sprzedaży oraz wprowadzenie systemu klientów. Zbiór klientów mógłby posiadać ograniczenia ile jednostek surowców można im sprzedać.
   \item Aby urealnić model trzeba ograniczyć system jednostek towarów wyprodukowanych do liczb naturalnych. Obecnie model zakłada podzielność jednostek co nie ma pokrycia w rzeczywistości. Odnoszę jednak wrażenie, że nie miałoby to zbyt dużego wpływu na wyniki ponieważ
     bez zróżnicowania sprzedaży za pomocą ograniczeń system nadal maksymalizowałby sprzedaż ciągników.
 \end{itemize}

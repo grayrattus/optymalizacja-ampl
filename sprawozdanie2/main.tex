@@ -1,0 +1,136 @@
+\documentclass{article}
+
+\title{Wspomaganie decyzji - Zad. 1}
+\author{Artur Dziedziczak}
+\date{\today}
+
+\usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+\usepackage{subcaption}
+\usepackage{microtype}
+\usepackage[
+    backend=biber,
+    natbib=true,
+    url=true,
+    doi=true,
+    eprint=false
+]{biblatex}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\addbibresource{sample.bib}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdftitle={Wspomaganie decyzji - Zad. 1 Artur Dziedziczak},
+    pdfpagemode=FullScreen,
+    }
+
+\usepackage{float}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage[english, polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{theorem}
+\usepackage{listings}
+
+\lstset{frame=tb,
+  language=Bash,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\usepackage[justification=centering]{caption}
+\begin{document}
+
+\maketitle
+
+\section{Zadanie projektu}
+
+Rozważmy następujące uproszczone zagadnienie modelowania wyboru w warunkach niepewności:
+
+Dysponujemy areałem $1 = 100ha$, na którym można stosować cztery rózne uprawy. Zyski z poszczególnych upraw zależą od pogody. Możliwych jest 6 scenariuszy sytuacji pogodowej.
+
+Poniższa tabela określa zyski jednostkowe kolejnych upraw (wierszy) przy poszczególnych scenariuszach (kolumnach):
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{ c |  c  c   c   c   c   c  }
+      & S1 & S2 & S3 & S4 & S5 & S6 \\
+      \hline
+      $x_1$ & 292 & 179 & 114 & 247 & 426 & 259 \\
+      $x_2$ & -128 & 560 & 648 & 544 & 182 & 850 \\
+      $x_3$ & 420 & 187 & 366 & 249 & 322 & 159 \\
+      $x_4$ & 579 & 639 & 379 & 924 & 5 & 569 \\
+      \hline
+    \end{tabular} 
+  \end{center}
+\end{table}
+
+Rozważmy dwa typy decyzji:
+
+\begin{itemize}
+    \item o niepodzielnych wariantach, gdy cały areał musi być przeznaczony pod jedną uprawę.
+    \item o podzielnych wariantach, gdy możliwy jest wiele upraw na podzielonym areale ($x_1 + x_2 + ... + x_n = a$).
+\end{itemize}
+
+Przeanalizować  wyniki różnych kryteriów wyobru w warunkach niepewności.
+
+Raport powinien być plikiem pdf (z ewentualnymi załącznikami).
+
+
+\section{Decyzje o niepodzielnych wariantach}
+
+Kryteria zawarte w sprawozdaniu są kryteriami, które zostały omówione w wykłądzie 4.
+
+W tej sekcji sprawozdania nie używam języka AMPL ponieważ obliczenia i podjęcie decyzji można wykonać poprzez
+prostą analizę danych w tabeli.
+
+\subsection{Kryterium średniej}
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{ c |  c  c   c   c   c   c  | c | c  }
+      & S1 & S2 & S3 & S4 & S5 & S6 & Suma & Średnia \\
+      \hline
+      $x_1$ & 292 & 179 & 114 & 247 & 426 & 259 & 1517 & 253 \\
+      $x_2$ & -128 & 560 & 648 & 544 & 182 & 850 & 2656 & 443 \\
+      $x_3$ & 420 & 187 & 366 & 249 & 322 & 159 & 1703 & 284 \\
+      $x_4$ & 579 & 639 & 379 & 924 & 5 & 569 & \cellcolor{orange!25} 3095 & \cellcolor{orange!25} 516 \\
+      \hline
+    \end{tabular} 
+  \end{center}
+\end{table}
+
+Wnioski:
+
+\begin{itemize}
+    \item Ponieważ ilość wariantów jest taka sama decyzję można podjąć już po określeniu sumy wyników. Średnia z najwyższej sumy
+      w tych warunkach zawsze będzie najwyższa.
+\end{itemize}
+
+
+\subsection{Kryterium optymistyczne i pesymistyczne}
+
+\subsection{Kryterium Hurwicza}
+
+\subsection{Minimalizacja maksymalnego żalu}
+
+\section{Decyzje o podzielnych wariantach}
+\end{document}
