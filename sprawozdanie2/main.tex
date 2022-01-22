@@ -115,6 +115,7 @@ prostą analizę danych w tabeli.
       $x_4$ & 579 & 639 & 379 & 924 & 5 & 569 & \cellcolor{orange!25} 3095 & \cellcolor{orange!25} 516 \\
       \hline
     \end{tabular} 
+    \caption{\label{table:avg}Tabela zawiera informację o średniej i sumie poszczególnych kolumn.}
   \end{center}
 \end{table}
 
@@ -123,12 +124,63 @@ Wnioski:
 \begin{itemize}
     \item Ponieważ ilość wariantów jest taka sama decyzję można podjąć już po określeniu sumy wyników. Średnia z najwyższej sumy
       w tych warunkach zawsze będzie najwyższa.
+    \item Podjęta decyzja to $x_4$.
+    \item Najgorsza możliwa decyzja do podjęcia to decyzja $x_1$.
 \end{itemize}
-
 
 \subsection{Kryterium optymistyczne i pesymistyczne}
 
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{ c |  c  c   c   c   c   c  | c | c  }
+      & S1 & S2 & S3 & S4 & S5 & S6 & Maksimum & Minimum \\
+      \hline
+      $x_1$ & 292 & 179 & 114 & 247 & 426 & 259 & 426 & 114 \\
+      $x_2$ & -128 & 560 & 648 & 544 & 182 & 850 & 850 & -128 \\
+      $x_3$ & 420 & 187 & 366 & 249 & 322 & 159 & 420 & \cellcolor{red!25} 159 \\
+      $x_4$ & 579 & 639 & 379 & 924 & 5 & 569 & \cellcolor{green!25} 924 & 5 \\
+      \hline
+    \end{tabular} 
+    \caption{\label{table:optpes}Tabela zawiera informację o maksymalnym zysku i minimalnej stracie/zysku.}
+  \end{center}
+\end{table}
+
+Wnioski:
+
+\begin{itemize}
+  \item Kryterium optymistyczne wybiera największy dostępny zyzk (zielony).
+  \item Kryterium optymistyczne wybiera najmniejszą możliwą stratę lub w tym przypadku zysk (czerwony).
+  \item Tak jak w przypadku kryterium średniej ~\ref{table:avg} wybór kryterium optymistycznego jest identyczny $x_4$.
+\end{itemize}
+
 \subsection{Kryterium Hurwicza}
+
+\begin{equation}\label{hurwicz}
+  H = \alpha O + (1 - \alpha) P, 0 \lt \alpha \lt 1
+\end{equation}
+
+Równanie \ref{hurwicz} przedstawia maksymalizację najlepszego i najgorszego możliwego wyniku.
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{ c | c c c c c c c c c c c }
+      \alpha & 0 & 0.1 & 0.2 & 0.3 & 0.4 & 0.5 & 0.6 & 0.7 & 0.8 & 0.9 & 1 \\
+      \hline
+      $x_1$ & 114 & 145 & 176 & 208 & 239 & 270 & 301 & 332 & 364 & 395 & 426 \\
+      $x_2$ & -128 &-30 & 68 & 165 & 263 & 361 & 459 & 557 & 654 & 752 & 850 \\
+      $x_3$ & \cellcolor{red!25} 159 & \cellcolor{red!25} 185 & \cellcolor{red!25}211 & 237 & 263 & 290 & 316 & 342 & 368 & 394 & 420 \\
+      $x_4$ & 5 & 97 & 189 & \cellcolor{green!25}281 & \cellcolor{green!25}373 & \cellcolor{green!25}464 & \cellcolor{green!25}556 & \cellcolor{green!25}648 & \cellcolor{green!25}740 & \cellcolor{green!25}832 & \cellcolor{green!25}924 \\
+      \hline
+    \end{tabular} 
+    \caption{\label{table:optpes} Tabela zawiera wartości funkcji H \ref{hurwicz}}
+  \end{center}
+\end{table}
+
+Wnioski:
+
+\begin{itemize}
+  \item 
+\end{itemize}
 
 \subsection{Minimalizacja maksymalnego żalu}
 
