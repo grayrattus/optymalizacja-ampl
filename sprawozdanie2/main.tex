@@ -27,7 +27,7 @@
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=cyan,
-    pdftitle={Wspomaganie decyzji - Zad. 1 Artur Dziedziczak},
+    pdftitle={Wspomaganie decyzji - Zad. 2 Artur Dziedziczak},
     pdfpagemode=FullScreen,
     }
 
@@ -61,6 +61,8 @@
 \begin{document}
 
 \maketitle
+
+\newpage
 
 \section{Zadanie projektu}
 
@@ -279,9 +281,7 @@ Wnioski:
   \item Kryteria Hurwicza, minimalizacji maksymalnego żalu, optymistyczne oraz średniej wskazują, że najlepszą decyzją byłaby $x_4$
 \end{itemize}
 
-
-
-
+\newpage
 \section{Decyzje o podzielnych wariantach}
 
 \subsection{Kryterium średniej}
@@ -390,6 +390,35 @@ MINOS 5.51: optimal solution found.
 \end{lstlisting}
 
 \noindent
+Analiza wyników:
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+      \hline
+      $x_1$ & $x_2$ & $x_3$ & $x_4$ \\
+      \hline
+      0 & 0 & 0 & 100 &
+      \hline
+    \end{tabular} 
+    \caption{\label{table:podzialarealu1} Podział areału}
+  \end{center}
+\end{table}
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+      $S_1$ & $S_2$ & $S_3$ & $S_4$ & $S_5$ & $S_6$ \\
+      \hline
+      57900 & 63900 & 37900 & 92400 & 500 & 56900 &
+      \hline
+    \end{tabular} 
+    \caption{\label{table:zyskdlaupraw1} Zysk dla upraw}
+  \end{center}
+\end{table}
+
+\noindent
 Wnioski:
 
 \begin{itemize}
@@ -435,8 +464,6 @@ $S_6 = 259 * x_1 + 850 * x_2 + 159 * x_3 + 569 * x_4$
 
 \noindent
 Funkcja celu:
-
-Wartości przy $x_i$ obliczone są w tabeli \ref{table:avg}.
 
 $z <= S_j$ 
 
@@ -506,13 +533,186 @@ MINOS 5.51: optimal solution found.
 \end{lstlisting}
 
 \noindent
+Analiza wyników:
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+      \hline
+      $x_1$ & $x_2$ & $x_3$ & $x_4$ \\
+      \hline
+      43.1619 & 15.3472 & 27.8875 & 13.6034 &
+      \hline
+    \end{tabular} 
+    \caption{\label{table:podzialarealu2} Podział areału}
+  \end{center}
+\end{table}
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+      $S_1$ & $S_2$ & $S_3$ & $S_4$ & $S_5$ & $S_6$ \\
+      \hline
+      30228 & 30228 & 30228 & 38523.4 & 30228 & 36398.5 &
+      \hline
+    \end{tabular} 
+    \caption{\label{table:zyskdlaupraw2} Zysk dla upraw}
+  \end{center}
+\end{table}
+
+\noindent
 Wnioski:
 
 \begin{itemize}
-    \itemize Cały areał został podzielony na wszystkie warianty.
+    \item Cały areał został podzielony na wszystkie warianty.
 \end{itemize}
 
 
 \subsection{Minimalizacja maksymalnego żalu}
+
+\noindent
+Identyfikacja zbiorów:
+
+$j$ - określa scenariusz $j = {1,2,3,4,5,6}$
+
+$i$ - wielkość danej uprawy gdzie $i = {1,2,3,4}$
+
+\noindent
+Parametry modelu:
+
+$S_j$ - osiągnięty zysk ze wszystkich upraw dla scenariusza
+
+$x_i$ - osiągnięty zysk scenariusza dla upraw gdzie
+
+\noindent
+Zmienne decyzyjne:
+
+$MZ$ - minimalny zysk z wszystkich upraw z danego scenariusza
+
+$x_i$ - wielkość danej uprawy
+
+Wartości przy $x_i$ zostały przepisane z tabeli minimalizacji maksymalnego żalu \ref{table:zal}.
+
+$S_1 = 287 * x_1 + 707 * x_2 + 159 * x_3$
+
+$S_2 = 460 * x_1 + 79 * x_2 + 452 * x_3$
+
+$S_3 = 534 * x_1 + 282 * x_3 + 269 * x_4$
+
+$S_4 = 677 * x_1 + 380 * x_2 + 675 * x_3$
+
+$S_5 = 244 * x_2 + 104 * x_3 + 421 * x_4$
+
+$S_6 = 591 * x_1 + 691 * x_3 + 281 * x_4$
+
+
+\noindent
+Funkcja celu:
+
+$z <= S_j$ 
+
+gdzie:
+
+$z$ - zysk z upraw przy najgorszym scenariuszu, który jest maksymalizowany
+
+\noindent
+Ograniczenia:
+
+\noindent
+Ograniczenie areału:
+
+$x_1 + x_2 + x_3 + x_4 = 100$
+
+$S_j >= MZ$
+
+\lstset{language=AMPL}
+\begin{lstlisting}[caption={Model napisany w języku AMPL},label=DescriptiveLabel]
+# Model
+
+set WIELKOSC_UPRAWY_INDEX;
+set INDEKS_SCENARIUSZA;
+
+var x {WIELKOSC_UPRAWY_INDEX} >= 0;
+var S {INDEKS_SCENARIUSZA} >= 0;
+
+var MZ >= 0;
+
+maximize z: MZ;
+
+subject to limitX: x[1] + x[2] + x[3] + x[4] = 100;
+
+subject to limitS1: S[1] = 287 * x[1] + 707 * x[2] + 159 * x[3];
+subject to limitS2: S[2] = 460 * x[1] + 79 *  x[2]+ 452 * x[3];
+subject to limitS3: S[3] = 534 * x[1] + 282 * x[3]+ 269 * x[4];
+subject to limitS4: S[4] = 677 * x[1] + 380 * x[2]+ 675 * x[3];
+subject to limitS5: S[5] = 244 * x[2] + 104 * x[3]+ 421 * x[4];
+subject to limitS6: S[6] = 591 * x[1] + 691 * x[3]+ 281 * x[4];
+
+subject to limitS { i in INDEKS_SCENARIUSZA}: MZ <= S[i];
+
+data; # Dane
+
+set WIELKOSC_UPRAWY_INDEX := 1,2,3,4;
+set INDEKS_SCENARIUSZA := 1,2,3,4,5,6;
+\end{lstlisting}
+
+\lstset{language=AMPL}
+\begin{lstlisting}[caption={Wynik modlu z solwerem MINOS.},label=DescriptiveLabel]
+MINOS 5.51: optimal solution found.
+3 iterations, objective 22976.29461
+:  _varname      _var        :=
+1    'x[1]'       4.52005
+2    'x[2]'      21.0952
+3    'x[3]'      42.5455
+4    'x[4]'      31.8393
+5    'S[1]'   22976.3
+6    'S[2]'   22976.3
+7    'S[3]'   22976.3
+8    'S[4]'   39794.4
+9    'S[5]'   22976.3
+10   'S[6]'   41017.1
+11   MZ       22976.3
+;
+== 18 ==========================
+\end{lstlisting}
+
+\noindent
+
+Analiza wyników:
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+      \hline
+      $x_1$ & $x_2$ & $x_3$ & $x_4$ \\
+      \hline
+      4.52005 & 21.0952 & 42.5455 & 31.8393 \\
+      \hline
+    \end{tabular} 
+    \caption{\label{table:podzialarealu3} Podział areału}
+  \end{center}
+\end{table}
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+      $S_1$ & $S_2$ & $S_3$ & $S_4$ & $S_5$ & $S_6$ \\
+      \hline
+      22976.3 & 22976.3 & 22976.3 & 39794.4 & 22976.3 & 41017.1 \\
+      \hline
+    \end{tabular} 
+    \caption{\label{table:zyskdlaupraw3} Zysk dla upraw}
+  \end{center}
+\end{table}
+
+\noindent
+Wnioski:
+
+\begin{itemize}
+    \item Cały areał został podzielony na wszystkie warianty.
+    \item Największy areał został przyznany wariantowi $x_3$.
+\end{itemize}
 
 \end{document}
