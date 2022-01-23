@@ -106,6 +106,8 @@ prostą analizę danych w tabeli.
 
 \subsection{Kryterium średniej}
 
+% Jeżeli by było przez wiele lat to wtedy te średnia miałaby sens
+
 Kryterium to polega na maksymalizacji wyniku średniego. Prowadzi ono do wyboru decyzji o największej średniej arytmetycznej (lub sumie) 
 wyników poszczegónych scenariuszy. \\
 
@@ -281,4 +283,106 @@ Wnioski:
 
 
 \section{Decyzje o podzielnych wariantach}
+
+\subsection{Kryterium średniej}
+
+\noindent
+Identyfikacja zbiorów:
+
+$j$ - określa scenariusz $j = {1,2,3,4,5,6}$
+
+$i$ - wielkość danej uprawy gdzie $i = {1,2,3,4}$
+
+\noindent
+Parametry modelu:
+
+$x_i$ - osiągnięty zysk scenariusza dla upraw gdzie
+
+\noindent
+Zmienne decyzyjne:
+
+$MZ$ - minimalny zysk z wszystkich upraw z danego scenariusza
+$x_i$ - wielkość danej uprawy
+
+\noindent
+Funkcja celu:
+
+Wartości przy $x_i$ obliczone są w tabeli \ref{table:avg}.
+
+$z <= 253 * x_1 + 443 * x_2 + 284 * x_3 + 516 * x_4$ 
+
+gdzie:
+
+$z$ - zysk z upraw, który jest maksymalizowany
+
+\noindent
+Ograniczenia:
+
+\noindent
+Ograniczenie areału:
+
+$x_1 + x_2 + x_3 + x_4 = 100$
+
+$S_j >= MZ$
+
+$S_1 = 292 * x_1 - 128 * x_2 + 420 * x_3 + 579 * x_4$
+
+$S_2 = 179 * x_1 + 560 * x_2 + 187 * x_3 + 639 * x_4$
+
+$S_3 = 114 * x_1 + 648 * x_2 + 366 * x_3 + 379 * x_4$
+
+$S_4 = 247 * x_1 + 544 * x_2 + 249 * x_3 + 924 * x_4$
+
+$S_5 = 426 * x_1 + 182 * x_2 + 322 * x_3 + 5 * x_4$
+
+$S_6 = 259 * x_1 + 850 * x_2 + 159 * x_3 + 569 * x_4$
+
+\lstset{language=AMPL}
+\begin{lstlisting}[caption={Model napisany w języku AMPL},label=DescriptiveLabel]
+# Model
+
+set WIELKOSC_UPRAWY_INDEX;
+
+var x {WIELKOSC_UPRAWY_INDEX} >= 0;
+
+param MZ = 0;
+
+maximize z: 253 * x[1] + 433 * x[2] + 284 * x[3] + 516 * x[4];
+
+subject to limitX: x[1] + x[2] + x[3] + x[4] = 100;
+subject to limitS1: 292 * x[1] + (-128) * x[2] + 420 * x[3] + 579 * x[4] >= MZ;
+subject to limitS2: 179 * x[1] + 560 * x[2] + 187 * x[3] + 639 * x[4] >= MZ;
+subject to limitS3: 114 * x[1] + 648 * x[2] + 366 * x[3] + 379 * x[4] >= MZ;
+subject to limitS4: 247 * x[1] + 544 * x[2] + 249 * x[3] + 924 * x[4] >= MZ;
+subject to limitS5: 426 * x[1] + 182 * x[2] + 322 * x[3] + 5 * x[4] >= MZ;
+subject to limitS6: 259 * x[1] + 850 * x[2] + 159 * x[3] + 569 * x[4] >= MZ;
+
+data; # Dane
+
+set WIELKOSC_UPRAWY_INDEX := 1,2,3,4;
+\end{lstlisting}
+
+\lstset{language=AMPL}
+\begin{lstlisting}[caption={Wynik modlu z solwerem MINOS.},label=DescriptiveLabel]
+MINOS 5.51: optimal solution found.
+3 iterations, objective 51600
+: _varname  _var    :=
+1   'x[1]'     0
+2   'x[2]'     0
+3   'x[3]'     0
+4   'x[4]'   100
+;
+\end{lstlisting}
+
+\noindent
+Wnioski:
+
+\begin{itemize}
+	\item Cały areał został przeznaczony na uprawę $x_4$.
+\end{itemize}
+
+\subsection{Kryterium pesymistyczne}
+
+\subsection{Minimalizacja maksymalnego żalu}
+
 \end{document}
