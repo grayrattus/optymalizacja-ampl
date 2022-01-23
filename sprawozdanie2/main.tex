@@ -296,6 +296,8 @@ $i$ - wielkość danej uprawy gdzie $i = {1,2,3,4}$
 \noindent
 Parametry modelu:
 
+$S_j$ - osiągnięty zysk ze wszystkich upraw dla scenariusza
+
 $x_i$ - osiągnięty zysk scenariusza dla upraw gdzie
 
 \noindent
@@ -342,36 +344,49 @@ $S_6 = 259 * x_1 + 850 * x_2 + 159 * x_3 + 569 * x_4$
 # Model
 
 set WIELKOSC_UPRAWY_INDEX;
+set INDEKS_SCENARIUSZA;
 
 var x {WIELKOSC_UPRAWY_INDEX} >= 0;
+var S {INDEKS_SCENARIUSZA} >= 0;
 
-param MZ = 0;
+var MZ = 0;
 
 maximize z: 253 * x[1] + 433 * x[2] + 284 * x[3] + 516 * x[4];
 
 subject to limitX: x[1] + x[2] + x[3] + x[4] = 100;
-subject to limitS1: 292 * x[1] + (-128) * x[2] + 420 * x[3] + 579 * x[4] >= MZ;
-subject to limitS2: 179 * x[1] + 560 * x[2] + 187 * x[3] + 639 * x[4] >= MZ;
-subject to limitS3: 114 * x[1] + 648 * x[2] + 366 * x[3] + 379 * x[4] >= MZ;
-subject to limitS4: 247 * x[1] + 544 * x[2] + 249 * x[3] + 924 * x[4] >= MZ;
-subject to limitS5: 426 * x[1] + 182 * x[2] + 322 * x[3] + 5 * x[4] >= MZ;
-subject to limitS6: 259 * x[1] + 850 * x[2] + 159 * x[3] + 569 * x[4] >= MZ;
+
+subject to limitS1: S[1] = 292 * x[1] + (-128) * x[2] + 420 * x[3] + 579 * x[4];
+subject to limitS2: S[2] = 179 * x[1] + 560 * x[2] + 187 * x[3] + 639 * x[4];
+subject to limitS3: S[3] = 114 * x[1] + 648 * x[2] + 366 * x[3] + 379 * x[4];
+subject to limitS4: S[4] = 247 * x[1] + 544 * x[2] + 249 * x[3] + 924 * x[4];
+subject to limitS5: S[5] = 426 * x[1] + 182 * x[2] + 322 * x[3] + 5 * x[4];
+subject to limitS6: S[6] = 259 * x[1] + 850 * x[2] + 159 * x[3] + 569 * x[4];
+
+subject to limitS { i in INDEKS_SCENARIUSZA}: MZ <= S[i];
 
 data; # Dane
 
 set WIELKOSC_UPRAWY_INDEX := 1,2,3,4;
+set INDEKS_SCENARIUSZA := 1,2,3,4,5,6;
 \end{lstlisting}
 
 \lstset{language=AMPL}
 \begin{lstlisting}[caption={Wynik modlu z solwerem MINOS.},label=DescriptiveLabel]
 MINOS 5.51: optimal solution found.
-3 iterations, objective 51600
-: _varname  _var    :=
-1   'x[1]'     0
-2   'x[2]'     0
-3   'x[3]'     0
-4   'x[4]'   100
+1 iterations, objective 51600
+:  _varname   _var     :=
+1    'x[1]'       0
+2    'x[2]'       0
+3    'x[3]'       0
+4    'x[4]'     100
+5    'S[1]'   57900
+6    'S[2]'   63900
+7    'S[3]'   37900
+8    'S[4]'   92400
+9    'S[5]'     500
+10   'S[6]'   56900
 ;
+== 12 ==========================
 \end{lstlisting}
 
 \noindent
@@ -379,9 +394,124 @@ Wnioski:
 
 \begin{itemize}
 	\item Cały areał został przeznaczony na uprawę $x_4$.
+	\item Wybrany wariant jest tym samym, który wyznaczony został analitycznie w \ref{table:avg}.
 \end{itemize}
 
 \subsection{Kryterium pesymistyczne}
+
+\noindent
+Identyfikacja zbiorów:
+
+$j$ - określa scenariusz $j = {1,2,3,4,5,6}$
+
+$i$ - wielkość danej uprawy gdzie $i = {1,2,3,4}$
+
+\noindent
+Parametry modelu:
+
+$S_j$ - osiągnięty zysk ze wszystkich upraw dla scenariusza
+
+$x_i$ - osiągnięty zysk scenariusza dla upraw gdzie
+
+\noindent
+Zmienne decyzyjne:
+
+$MZ$ - minimalny zysk z wszystkich upraw z danego scenariusza
+
+$x_i$ - wielkość danej uprawy
+
+$S_1 = 292 * x_1 - 128 * x_2 + 420 * x_3 + 579 * x_4$
+
+$S_2 = 179 * x_1 + 560 * x_2 + 187 * x_3 + 639 * x_4$
+
+$S_3 = 114 * x_1 + 648 * x_2 + 366 * x_3 + 379 * x_4$
+
+$S_4 = 247 * x_1 + 544 * x_2 + 249 * x_3 + 924 * x_4$
+
+$S_5 = 426 * x_1 + 182 * x_2 + 322 * x_3 + 5 * x_4$
+
+$S_6 = 259 * x_1 + 850 * x_2 + 159 * x_3 + 569 * x_4$
+
+
+\noindent
+Funkcja celu:
+
+Wartości przy $x_i$ obliczone są w tabeli \ref{table:avg}.
+
+$z <= S_j$ 
+
+gdzie:
+
+$z$ - zysk z upraw przy najgorszym scenariuszu, który jest maksymalizowany
+
+\noindent
+Ograniczenia:
+
+\noindent
+Ograniczenie areału:
+
+$x_1 + x_2 + x_3 + x_4 = 100$
+
+$S_j >= MZ$
+
+\lstset{language=AMPL}
+\begin{lstlisting}[caption={Model napisany w języku AMPL},label=DescriptiveLabel]
+# Model
+
+set WIELKOSC_UPRAWY_INDEX;
+set INDEKS_SCENARIUSZA;
+
+var x {WIELKOSC_UPRAWY_INDEX} >= 0;
+var S {INDEKS_SCENARIUSZA} >= 0;
+
+var MZ >= 0;
+
+maximize z: MZ;
+
+subject to limitX: x[1] + x[2] + x[3] + x[4] = 100;
+
+subject to limitS1: S[1] = 292 * x[1] + (-128) * x[2] + 420 * x[3] + 579 * x[4];
+subject to limitS2: S[2] = 179 * x[1] + 560 * x[2] + 187 * x[3] + 639 * x[4];
+subject to limitS3: S[3] = 114 * x[1] + 648 * x[2] + 366 * x[3] + 379 * x[4];
+subject to limitS4: S[4] = 247 * x[1] + 544 * x[2] + 249 * x[3] + 924 * x[4];
+subject to limitS5: S[5] = 426 * x[1] + 182 * x[2] + 322 * x[3] + 5 * x[4];
+subject to limitS6: S[6] = 259 * x[1] + 850 * x[2] + 159 * x[3] + 569 * x[4];
+
+subject to limitS { i in INDEKS_SCENARIUSZA}: MZ <= S[i];
+
+data; # Dane
+
+set WIELKOSC_UPRAWY_INDEX := 1,2,3,4;
+set INDEKS_SCENARIUSZA := 1,2,3,4,5,6;
+\end{lstlisting}
+
+\lstset{language=AMPL}
+\begin{lstlisting}[caption={Wynik modlu z solwerem MINOS.},label=DescriptiveLabel]
+MINOS 5.51: optimal solution found.
+4 iterations, objective 30227.95099
+:  _varname      _var       :=
+1    'x[1]'      43.1619
+2    'x[2]'      15.3472
+3    'x[3]'      27.8875
+4    'x[4]'      13.6034
+5    'S[1]'   30228
+6    'S[2]'   30228
+7    'S[3]'   30228
+8    'S[4]'   38523.4
+9    'S[5]'   30228
+10   'S[6]'   36398.5
+11   MZ       30228
+;
+== 9 ==========================
+\end{lstlisting}
+
+\noindent
+Wnioski:
+
+\begin{itemize}
+    \itemize Cały areał został podzielony na wszystkie warianty.
+\end{itemize}
+
 
 \subsection{Minimalizacja maksymalnego żalu}
 
